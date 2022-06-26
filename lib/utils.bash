@@ -37,23 +37,29 @@ download_release() {
   version="$1"
   filename="$2"
 
+  version_prefix="v"
+  # If the version is greater than or equal to 0.8.2
+  if [ "$(cat <(echo "0.8.2") <(echo "$version") |sort -V |head -n 1)" = "0.8.2" ]; then
+    version_prefix=""
+  fi
+
   local arch; arch=$(uname -m | tr '[:upper:]' '[:lower:]')
   local kernel; kernel=$(uname -s | tr '[:upper:]' '[:lower:]')
   case "${arch}-${kernel}" in
   arm64-linux)
-    url="$GH_REPO/releases/download/v${version}/zoxide-v${version}-aarch64-unknown-linux-musl.tar.gz"
+    url="$GH_REPO/releases/download/v${version}/zoxide-${version_prefix}${version}-aarch64-unknown-linux-musl.tar.gz"
     ;;
   arm64-darwin)
-    url="$GH_REPO/releases/download/v${version}/zoxide-v${version}-aarch64-apple-darwin.tar.gz"
+    url="$GH_REPO/releases/download/v${version}/zoxide-${version_prefix}${version}-aarch64-apple-darwin.tar.gz"
     ;;
   armv7l-linux)
-    url="$GH_REPO/releases/download/v${version}/zoxide-v${version}-armv7-unknown-linux-musleabihf.tar.gz"
+    url="$GH_REPO/releases/download/v${version}/zoxide-${version_prefix}${version}-armv7-unknown-linux-musleabihf.tar.gz"
     ;;
   x86_64-linux)
-    url="$GH_REPO/releases/download/v${version}/zoxide-v${version}-x86_64-unknown-linux-musl.tar.gz"
+    url="$GH_REPO/releases/download/v${version}/zoxide-${version_prefix}${version}-x86_64-unknown-linux-musl.tar.gz"
     ;;
   x86_64-darwin)
-    url="$GH_REPO/releases/download/v${version}/zoxide-v${version}-x86_64-apple-darwin.tar.gz"
+    url="$GH_REPO/releases/download/v${version}/zoxide-${version_prefix}${version}-x86_64-apple-darwin.tar.gz"
     ;;
   *)
     fail "Could not determine release URL"
